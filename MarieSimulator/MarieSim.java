@@ -2,7 +2,7 @@
 // Author:      Julie Lobur
 // JDK Version: 1.3.1
 // Date:        November 7, 2001
-// Notice:      (c) 2003 Julia M. Lobur 
+// Notice:      (c) 2003 Julia M. Lobur
 //              This code may be freely used for noncommercial purposes.
 package MarieSimulator;
 import java.io.*;
@@ -14,9 +14,9 @@ import javax.swing.text.*;
 import javax.swing.table.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.print.*; 
-import javax.print.attribute.*; 
-import javax.print.attribute.standard.*; 
+import javax.print.*;
+import javax.print.attribute.*;
+import javax.print.attribute.standard.*;
 
 public class MarieSim extends JFrame {
 /******************************************************************************************
@@ -52,9 +52,9 @@ public class MarieSim extends JFrame {
   public static final String fileSeparator = System.getProperty("file.separator");
 
   public static final String HELP_FILE = "msimhlp1.txt";  // Help file name.
-                                 
-  public static final JFileChooser exeFileChooser = 
-                                   new JFileChooser(System.getProperty("user.dir")); 
+
+  public static final JFileChooser exeFileChooser =
+                                   new JFileChooser(System.getProperty("user.dir"));
 
   public static final String[] errorMsgs = {
                                          "Program terminated normally.",       //  0
@@ -114,12 +114,12 @@ public class MarieSim extends JFrame {
 
   static final int MEMORY_TABLE_ROW_HEIGHT = 15;  // Make sure the address and code table
                                                   // rows are the same height.
-  static final int PROGRAM_TABLE_ROW_HEIGHT = 19; // Give us a bit larger row for 
+  static final int PROGRAM_TABLE_ROW_HEIGHT = 19; // Give us a bit larger row for
                                                   // the program instructions.
 
   public static final int MINIMUM_DELAY = 10;
   public static final String[] base = {"Hex", "Dec", "ASCII"};
-  public static final String[] outputControl = {"Control", "Use Linefeeds", "No Linefeeds", 
+  public static final String[] outputControl = {"Control", "Use Linefeeds", "No Linefeeds",
                                                 "Clear output", "Print"};
   public static final Color simulatorBackground = new Color(175, 175, 200);
   public static final Color  registerForeground = new Color(105, 185, 225);
@@ -136,7 +136,7 @@ public class MarieSim extends JFrame {
   boolean     stepping = false;        // Whether executing one instruction at a time.
   boolean breakpointOn = false;        // Whether executing to a breakpoint.
   int            delay = 10;           // Delay between instruction executions;
-  boolean outputWithLinefeed = true;   // Determines whether characters output will have 
+  boolean outputWithLinefeed = true;   // Determines whether characters output will have
                                        // linefeeds supplied.  User can change this.
   static  String  statusMessage = null;
   static  Vector   outputStream = new Vector();  // Holds output so we can reformat.
@@ -145,7 +145,7 @@ public class MarieSim extends JFrame {
   boolean errorFound = false;   // Non-fatal error flag, e.g. invalid  user input.
   boolean fatalError = false;   // Fatal error flag, e.g., invalid branch address.
   int      errorCode = 0;
-  JPanel simulatorPane; 
+  JPanel simulatorPane;
 
   JMenuBar       controlBar = new JMenuBar();  // Container for the menu as follows:
   JMenu            fileMenu = new JMenu();        // "File" menu
@@ -171,7 +171,7 @@ public class MarieSim extends JFrame {
   JButton           runStop = new JButton();      // "Stop" button
   JButton              step = new JButton();      // "Step" button
 
-  JMenu       breakpointMenu = new JMenu();       // "Breakpont" menu 
+  JMenu       breakpointMenu = new JMenu();       // "Breakpont" menu
   JMenuItem        runToItem = new JMenuItem();   //       | run to next breakpoint
   JMenuItem clearBPointsItem = new JMenuItem();   //       | remove all breakpoints
 
@@ -192,7 +192,7 @@ public class MarieSim extends JFrame {
   ProgramTableModel    ptm = new ProgramTableModel();  // Program monitor table control.
   int      programFocusRow = 0;           // Current instruction pointer in monitor.
   Hashtable codeReference                 // codeReference provides correspondence
-            = new Hashtable(16, (float) 0.75);   // between monitor table and 
+            = new Hashtable(16, (float) 0.75);   // between monitor table and
                                           // instruction addresses.
                                           // Initial capacity 16, load factor 0.75.
 
@@ -242,10 +242,10 @@ public class MarieSim extends JFrame {
   Object[][] memoryArray = new Object[256][17]; // Memory contents.
   JTable     memoryTable;                       // Table for memory contents display.
   int    memoryFocusCell = 0;                   // Current memory location in table.
-     
+
   JTextField    msgField = new JTextField(); //   Status message field contents.
   JPanel     bottomPanel = new JPanel();     // Container for memory array table and
-                                             //    message window. 
+                                             //    message window.
   class DelayFrame extends JFrame {
 /******************************************************************************************
 *   This class displays a slider in a frame to allow the user to change the value of the  *
@@ -257,7 +257,7 @@ public class MarieSim extends JFrame {
 *   nullification of the pointer to this frame.                                           *
 ******************************************************************************************/
     JPanel       buttons = new JPanel();
-    JLabel   sliderLabel = 
+    JLabel   sliderLabel =
                          new JLabel("Select instruction execution delay in milliseconds.");
     JTextField   msDelay = new JTextField();
     JLabel    blankLabel = new JLabel();      // Spacer
@@ -270,7 +270,7 @@ public class MarieSim extends JFrame {
       setSize(new Dimension(400, 200));
       addWindowListener(new WindowAdapter() {
           public void windowClosing(WindowEvent e) {
-               dispose();            
+               dispose();
                return;
           } // windowClosing()
       }); // Listener
@@ -288,7 +288,7 @@ public class MarieSim extends JFrame {
       milliseconds.setPaintTicks(true);
       milliseconds.setPaintLabels(true);
       milliseconds.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
-      milliseconds.setPreferredSize(new Dimension(325, 50));  
+      milliseconds.setPreferredSize(new Dimension(325, 50));
       milliseconds.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {           // Anonymous inner class
           JSlider source = (JSlider)e.getSource();          // for getting slider value.
@@ -299,7 +299,7 @@ public class MarieSim extends JFrame {
           }
         } // stateChanged()
       }); // Listener
-      msDelay.setPreferredSize(new Dimension(57, 30)); 
+      msDelay.setPreferredSize(new Dimension(57, 30));
       msDelay.setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createLineBorder(new Color(145, 145, 210), 2),
                             BorderFactory.createLoweredBevelBorder()));
@@ -308,12 +308,12 @@ public class MarieSim extends JFrame {
       msDelay.setEditable(false);
       blankLabel.setPreferredSize(new Dimension(30, 35));
       okayButton.setMaximumSize(new Dimension(80, 35));     // Populate the button pane.
-      okayButton.setMinimumSize(new Dimension(80, 35));   
-      okayButton.setPreferredSize(new Dimension(80, 35));  
+      okayButton.setMinimumSize(new Dimension(80, 35));
+      okayButton.setPreferredSize(new Dimension(80, 35));
       JRootPane root = getRootPane();
       root.setDefaultButton(okayButton);
-      okayButton.addActionListener(new ActionListener() {    // On the okay button, 
-        public void actionPerformed(ActionEvent e) {         // set the delay 
+      okayButton.addActionListener(new ActionListener() {    // On the okay button,
+        public void actionPerformed(ActionEvent e) {         // set the delay
             if (sliderDelay < MINIMUM_DELAY)                 // according to the
               sliderDelay = MINIMUM_DELAY;                   // slider value and
             delay = sliderDelay;                             // dispatch a window-
@@ -324,9 +324,9 @@ public class MarieSim extends JFrame {
             DelayFrame.this.dispatchEvent(we);
         }
       });  // Listener
-      cancelButton.setMaximumSize(new Dimension(80, 35));   
-      cancelButton.setMinimumSize(new Dimension(80, 35));   
-      cancelButton.setPreferredSize(new Dimension(80, 35)); 
+      cancelButton.setMaximumSize(new Dimension(80, 35));
+      cancelButton.setMinimumSize(new Dimension(80, 35));
+      cancelButton.setPreferredSize(new Dimension(80, 35));
       cancelButton.addActionListener(new ActionListener() {    // If we're canceled, just
         public void actionPerformed(ActionEvent e) {           // dispatch a window-
              WindowEvent we = new WindowEvent(DelayFrame.this, // closing event.
@@ -334,7 +334,7 @@ public class MarieSim extends JFrame {
              DelayFrame.this.dispatchEvent(we);
         }
       }); // Listener
-      buttons.setPreferredSize(new Dimension(300, 75)); 
+      buttons.setPreferredSize(new Dimension(300, 75));
       buttons.add(msDelay);
       buttons.add(blankLabel);
       buttons.add(okayButton);                              // Put the buttons in the
@@ -384,7 +384,7 @@ public class MarieSim extends JFrame {
       JPanel dumpPane = (JPanel) this.getContentPane();
       addWindowListener(new WindowAdapter() {
         public void windowClosing(WindowEvent e) {
-               dispose();            
+               dispose();
                return;
         } // windowClosing()
       }); // Listener
@@ -392,8 +392,8 @@ public class MarieSim extends JFrame {
                              .createImage(MarieSim.class.getResource("M.gif")));
       setSize(new Dimension(500, 300));
       dumpPane.setPreferredSize(new Dimension(450, 150));
-      dumpPane.setLayout(new FlowLayout()); 
-                                            // Set default starting and ending 
+      dumpPane.setLayout(new FlowLayout());
+                                            // Set default starting and ending
                                             // addresses for dump
       sliderStart = stringToInt(HEX, ((String) programArray[0][1]).trim());
       sliderEnd   = sliderStart + codeLineCount - 1;
@@ -410,7 +410,7 @@ public class MarieSim extends JFrame {
       starting.setBorder(BorderFactory.createTitledBorder(
                          BorderFactory.createLineBorder(new Color(145, 145, 210), 2),
                          " Starting Memory Address "));
-      starting.setPreferredSize(new Dimension(400, 80));  
+      starting.setPreferredSize(new Dimension(400, 80));
       starting.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {           // Anonymous inner class
           JSlider source = (JSlider)e.getSource();          // for getting slider value.
@@ -427,7 +427,7 @@ public class MarieSim extends JFrame {
           }
         } // stateChanged()
       }); // Listener
-      startAddr.setPreferredSize(new Dimension(57, 30)); 
+      startAddr.setPreferredSize(new Dimension(57, 30));
       startAddr.setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createLineBorder(new Color(145, 145, 210), 2),
                             BorderFactory.createLoweredBevelBorder()));
@@ -444,7 +444,7 @@ public class MarieSim extends JFrame {
       ending.setBorder(BorderFactory.createTitledBorder(
                          BorderFactory.createLineBorder(new Color(145, 145, 210), 2),
                          " Ending Memory Address "));
-      ending.setPreferredSize(new Dimension(400, 80));  
+      ending.setPreferredSize(new Dimension(400, 80));
       ending.addChangeListener(new ChangeListener() {
         public void stateChanged(ChangeEvent e) {           // Anonymous inner class
           JSlider source = (JSlider)e.getSource();          // for getting slider value.
@@ -461,7 +461,7 @@ public class MarieSim extends JFrame {
           }
         } // stateChanged()
       }); // Listener
-      endAddr.setPreferredSize(new Dimension(57, 30)); 
+      endAddr.setPreferredSize(new Dimension(57, 30));
       endAddr.setBorder(BorderFactory.createCompoundBorder(
                             BorderFactory.createLineBorder(new Color(145, 145, 210), 2),
                             BorderFactory.createLoweredBevelBorder()));
@@ -470,33 +470,33 @@ public class MarieSim extends JFrame {
       endAddr.setEditable(false);
       blankLabel.setPreferredSize(new Dimension(30, 35));
       okayButton.setMaximumSize(new Dimension(80, 35));     // Populate the button pane.
-      okayButton.setMinimumSize(new Dimension(80, 35));   
+      okayButton.setMinimumSize(new Dimension(80, 35));
       okayButton.setPreferredSize(new Dimension(80, 35));
       okayButton.addActionListener(new ActionListener() {   // If user is happy, update
         public void actionPerformed(ActionEvent e) {                  // values and exit
-            produceCoreDump(sliderStart, sliderEnd);                  // by dispatching 
+            produceCoreDump(sliderStart, sliderEnd);                  // by dispatching
             WindowEvent we = new WindowEvent(CoreDumpFrame.this,      // a window-
                                        WindowEvent.WINDOW_CLOSING);   // closing event.
-            CoreDumpFrame.this.dispatchEvent(we);    
+            CoreDumpFrame.this.dispatchEvent(we);
         }
       }); // Listener
-      cancelButton.setMaximumSize(new Dimension(80, 35));   
-      cancelButton.setMinimumSize(new Dimension(80, 35));   
-      cancelButton.setPreferredSize(new Dimension(80, 35)); 
+      cancelButton.setMaximumSize(new Dimension(80, 35));
+      cancelButton.setMinimumSize(new Dimension(80, 35));
+      cancelButton.setPreferredSize(new Dimension(80, 35));
       cancelButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {                // Just quit if we're
-            WindowEvent we = new WindowEvent(CoreDumpFrame.this,    // cancelled by 
-                                       WindowEvent.WINDOW_CLOSING); // dispatching a 
+            WindowEvent we = new WindowEvent(CoreDumpFrame.this,    // cancelled by
+                                       WindowEvent.WINDOW_CLOSING); // dispatching a
             CoreDumpFrame.this.dispatchEvent(we);                   // closing event.
-        }                                                   
+        }
       }); // Listener
-      buttons.setPreferredSize(new Dimension(300, 75)); 
+      buttons.setPreferredSize(new Dimension(300, 75));
       buttons.add(okayButton);                              // Put the buttons in the
       buttons.add(cancelButton);                            // button panel.
       dumpPane.add(sliderLabel);                            // Add label, slider
-      dumpPane.add(starting);                               // and buttons to the main     
+      dumpPane.add(starting);                               // and buttons to the main
       dumpPane.add(startAddr);                              // frame.
-      dumpPane.add(ending);     
+      dumpPane.add(ending);
       dumpPane.add(endAddr);
       dumpPane.add(buttons);
       setLocation(200, 75);
@@ -515,7 +515,7 @@ public class MarieSim extends JFrame {
   JPanel    logoPanel = new JPanel();       // Logo panel.
   JLabel    logoLabel = new JLabel();           // JLabel to hold our picture.
   ImageIcon      logo = new ImageIcon();        // The picture for the label.
-  
+
   JPanel    infoPanel = new JPanel();       // Information panel.
   JLabel  pgmTitle = new JLabel("MARIE Machine Simulator - Version 1.3.01");
   JLabel copyRight = new JLabel("Copyright (c) 2003, 2006");
@@ -523,7 +523,7 @@ public class MarieSim extends JFrame {
   JLabel   theBook = new JLabel("The Essentials of Computer Organization and Architecture 2/e  ");
   JLabel   authors = new JLabel("By Linda M. Null & Julia M. Lobur");
   JLabel publisher = new JLabel("Jones & Bartlett Publishers");
-  
+
   JPanel okBttonPanel = new JPanel();       // Button panel.
   JButton    okButton = new JButton("Ok");      // And its button.
 
@@ -535,7 +535,7 @@ public class MarieSim extends JFrame {
     this.setTitle("About this Program");
     enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     mainPanel.setLayout(new BorderLayout());
-    
+
     logo = new ImageIcon(MarieDPath.class.getResource("ECOA.jpg"));
 
     logoPanel.setLayout(new FlowLayout());            // Build the logo panel.
@@ -544,17 +544,17 @@ public class MarieSim extends JFrame {
     logoPanel.add(logoLabel, null);
     centerPanel.setLayout(new BorderLayout());
     centerPanel.add(logoPanel, BorderLayout.WEST);
-    
+
     copyRight.setFont(new Font("sanserif", 0, 12));   // Build the main content area.
     accompany.setFont(new Font("sanserif", 0, 12));
     theBook.setFont(new Font("sanserif", Font.BOLD + Font.ITALIC, 14));
     authors.setFont(new Font("sanserif", 0, 12));
-    publisher.setFont(new Font("sanserif", 0, 12)); 
-    infoPanel.setLayout(gridLayout);     
+    publisher.setFont(new Font("sanserif", 0, 12));
+    infoPanel.setLayout(gridLayout);
     gridLayout.setRows(6);
     gridLayout.setColumns(1);
     infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 60, 10, 10));
-    
+
     okBttonPanel.setLayout(new FlowLayout());
     okButton.addActionListener(this);
 
@@ -566,7 +566,7 @@ public class MarieSim extends JFrame {
     infoPanel.add(authors, null);
     infoPanel.add(publisher, null);
     centerPanel.add(infoPanel, BorderLayout.CENTER);
-    
+
     mainPanel.add(centerPanel, BorderLayout.NORTH);
     okBttonPanel.add(okButton, null);
     mainPanel.add(okBttonPanel, BorderLayout.SOUTH);
@@ -576,14 +576,14 @@ public class MarieSim extends JFrame {
     pack();
     show();
   } // HelpAboutFrame()
-  
+
   protected void processWindowEvent(WindowEvent e) { // Process window closing, anything
-    if (e.getID() == WindowEvent.WINDOW_CLOSING) {   // else will be handled by the 
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {   // else will be handled by the
       cancel();                                      // super class.
     }
     super.processWindowEvent(e);
   }
-  
+
   void cancel() {                                    // Close the frame and free its memory.
     dispose();
     return;
@@ -602,11 +602,11 @@ public class MarieSim extends JFrame {
 *  with a valid MARIE executable file extension are displayed by the JFileChooser.        *
 ******************************************************************************************/
     String myFileType = MEX_TYPE;
-    public boolean accept (File file) { 
+    public boolean accept (File file) {
        if (file.isDirectory())
          return true;
        if (file.getName().endsWith(myFileType))
-         return true; 
+         return true;
        else
          return false;
     }
@@ -628,7 +628,7 @@ public class MarieSim extends JFrame {
       public Object getValueAt(int row, int col) {
         return programArray[row][col];
       }
-  
+
       public boolean isCellEditable(int rowIndex, int columnIndex) {
         if (columnIndex == 0 )                // Determines whether the data
           return true;                        // value in a cell can be changed.
@@ -639,7 +639,7 @@ public class MarieSim extends JFrame {
         programArray[row][col] = value;       // Only one column is editable,
         fireTableDataChanged();               // set by isCellEditable method.
       }
-      public Class getColumnClass(int c) {    // This method is used to provide 
+      public Class getColumnClass(int c) {    // This method is used to provide
         return getValueAt(0, c).getClass();   // the default cell editor.  I.e.,
       }                                       // Booleans display as checkboxes.
     } // ProgramTableModel
@@ -668,7 +668,7 @@ public class MarieSim extends JFrame {
     String rendering;   // String of value in mode: e.g., value = 12 = "C".
 
     public Register(int whichOne) {      // Constructor.
-      if ((whichOne >= AC) && (whichOne <= OUTPUT))     // Make sure we have a valid 
+      if ((whichOne >= AC) && (whichOne <= OUTPUT))     // Make sure we have a valid
         designation = whichOne;                         // designation.
       else {
         fatalError = true;
@@ -685,7 +685,7 @@ public class MarieSim extends JFrame {
 *   if the register contains decimal 15, its rendering in decimal is "15."  When the      *
 *   mode is changed to hex, the rendering changes to "000F."                              *
 ******************************************************************************************/
-      if ((m == DEC) || (m == ASCII)) 
+      if ((m == DEC) || (m == ASCII))
         mode = m;
       else
         mode = HEX;
@@ -706,8 +706,8 @@ public class MarieSim extends JFrame {
            value = (short) (v & 0x00000FFF);
       }
       switch (mode) {
-        case   HEX: if ((designation == MAR) 
-                             ||(designation == PC))  
+        case   HEX: if ((designation == MAR)
+                             ||(designation == PC))
                       rendering = "  "+to3CharHexStr(value);
                     else
                       rendering = " "+to4CharHexStr(value);
@@ -717,15 +717,15 @@ public class MarieSim extends JFrame {
                     else
                       rendering = "    " + (char) (v % 128);
                     break;
-           default: 
+           default:
                     if ((designation != OUTPUT) && (value > 0))
-                      rendering = " "+Integer.toString(value); 
+                      rendering = " "+Integer.toString(value);
                     else
-                      rendering = Integer.toString(value); 
+                      rendering = Integer.toString(value);
       } // switch
       setText(rendering);   // JTextFrame method
     } // setValue ()
-  
+
     public void setValue(String v) {
 /******************************************************************************************
 *   Sets the value in the register to the numeric value passed in the String argument     *
@@ -755,7 +755,7 @@ public class MarieSim extends JFrame {
            value = (short) (v & 0x00000FFF);
          }
        }
-    return value; 
+    return value;
     }
   } // Register
 
@@ -884,7 +884,7 @@ public class MarieSim extends JFrame {
     restartItem.setEnabled(false);
     restartItem.setMnemonic('E');
     restartItem.addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e) { 
+         public void actionPerformed(ActionEvent e) {
             restart();
          }
     }); // Listener
@@ -918,9 +918,9 @@ public class MarieSim extends JFrame {
     runStop.setText("Stop");                      // Add the "stop" button.
     runStop.setMnemonic('S');
     runStop.setEnabled(false);
-    runStop.setMaximumSize(new Dimension(70, 27));   
-    runStop.setMinimumSize(new Dimension(70, 27));   
-    runStop.setPreferredSize(new Dimension(70, 27));   
+    runStop.setMaximumSize(new Dimension(70, 27));
+    runStop.setMinimumSize(new Dimension(70, 27));
+    runStop.setPreferredSize(new Dimension(70, 27));
     runStop.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
            runStop.setEnabled(false);
@@ -929,12 +929,12 @@ public class MarieSim extends JFrame {
       }
     }); // Listener
 
-    step.setText("Step");                        // Set properties for the "next 
+    step.setText("Step");                        // Set properties for the "next
     step.setMnemonic('T');                       // step" button.
     step.setEnabled(false);
-    step.setMaximumSize(new Dimension(70, 27));   
-    step.setMinimumSize(new Dimension(70, 27));   
-    step.setPreferredSize(new Dimension(70, 27));   
+    step.setMaximumSize(new Dimension(70, 27));
+    step.setMinimumSize(new Dimension(70, 27));
+    step.setPreferredSize(new Dimension(70, 27));
     step.setFocusPainted(false);
     step.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -965,7 +965,7 @@ public class MarieSim extends JFrame {
            }
          }
     }); // Listener
-    
+
     clearBPointsItem.setText("Clear Breakpoints");
     clearBPointsItem.setMnemonic('C');
     clearBPointsItem.addActionListener(new ActionListener() {
@@ -979,9 +979,9 @@ public class MarieSim extends JFrame {
 
     showSymbols.setText("Symbol Map");           // Symbol table button
     showSymbols.setMnemonic('M');
-    showSymbols.setMaximumSize(new Dimension(120, 27));   
-    showSymbols.setMinimumSize(new Dimension(120, 27));   
-    showSymbols.setPreferredSize(new Dimension(120, 27));   
+    showSymbols.setMaximumSize(new Dimension(120, 27));
+    showSymbols.setMinimumSize(new Dimension(120, 27));
+    showSymbols.setPreferredSize(new Dimension(120, 27));
     showSymbols.setFocusPainted(false);
     showSymbols.setEnabled(false);
     showSymbols.setToolTipText("Display symbol table.");
@@ -1009,7 +1009,7 @@ public class MarieSim extends JFrame {
     helpMenu.add(getHelp);
     helpMenu.add(helpAbout);
 
-    controlBar.add(fileMenu);                    // Add all submenus and buttons to the 
+    controlBar.add(fileMenu);                    // Add all submenus and buttons to the
     controlBar.add(runMenu);                     // frame's main menu.
     controlBar.add(runStop);
     controlBar.add(step);
@@ -1032,7 +1032,7 @@ public class MarieSim extends JFrame {
     programPane.setPreferredSize(new Dimension(318, 248));  // monitor table.
     programPane.setBorder(BorderFactory.createEtchedBorder());
 
-    mainPanel.add(programPane);  
+    mainPanel.add(programPane);
 /* --                                                                                 -- */
 /* --                             Set up register panel.                              -- */
 /* --                                                                                 -- */
@@ -1046,7 +1046,7 @@ public class MarieSim extends JFrame {
 /* --                                                                                 -- */
 /* -- Accumulator                                                                     -- */
 /* --                                                                                 -- */
-    acPanel.setPreferredSize(new Dimension(172, 35));       // Set AC register's panel 
+    acPanel.setPreferredSize(new Dimension(172, 35));       // Set AC register's panel
     acPanel.setBorder(BorderFactory                         // characteristics
                              .createRaisedBevelBorder());
     acPanel.setBackground(registerForeground);
@@ -1081,7 +1081,7 @@ public class MarieSim extends JFrame {
     irPanel.setBorder(BorderFactory.createRaisedBevelBorder());
     irPanel.setBackground(registerForeground);
     irPanel.setLayout(new FlowLayout());
-    irLabel.setPreferredSize(new Dimension(30, 15));  
+    irLabel.setPreferredSize(new Dimension(30, 15));
     irLabel.setFont(new Font("Dialog", 1, 12));
     irLabel.setText("IR");
     irLabel.setForeground(registerTextColor);
@@ -1091,7 +1091,7 @@ public class MarieSim extends JFrame {
     regIR.setFont(new java.awt.Font("Monospaced", 0, 14));
     regIR.setValue(0);
     regIR.setEditable(false);
-    irModeBox.setPreferredSize(new Dimension(57, 20));  
+    irModeBox.setPreferredSize(new Dimension(57, 20));
     irModeBox.setBackground(registerForeground);
     irModeBox.setFont(new Font("Dialog", 0, 11));
     irModeBox.addActionListener(new ActionListener() {
@@ -1107,21 +1107,21 @@ public class MarieSim extends JFrame {
 /* --                                                                                 -- */
 /* -- Memory Address Register (MAR)                                                   -- */
 /* --                                                                                 -- */
-    marPanel.setPreferredSize(new Dimension(172, 34));  
+    marPanel.setPreferredSize(new Dimension(172, 34));
     marPanel.setBorder(BorderFactory.createRaisedBevelBorder());
     marPanel.setBackground(registerForeground);
     marPanel.setLayout(new FlowLayout());
-    marLabel.setPreferredSize(new Dimension(30, 15));  
+    marLabel.setPreferredSize(new Dimension(30, 15));
     marLabel.setFont(new Font("Dialog", 1, 12));
     marLabel.setText("MAR");
     marLabel.setForeground(registerTextColor);
     marLabel.setToolTipText("Memory Address Register");
-    regMAR.setPreferredSize(new Dimension(52, 20));  
-    regMAR.setBorder(BorderFactory.createLoweredBevelBorder());  
+    regMAR.setPreferredSize(new Dimension(52, 20));
+    regMAR.setBorder(BorderFactory.createLoweredBevelBorder());
     regMAR.setFont(new Font("Monospaced", 0, 14));
     regMAR.setValue(0);
     regMAR.setEditable(false);
-    marModeBox.setPreferredSize(new Dimension(57, 20));  
+    marModeBox.setPreferredSize(new Dimension(57, 20));
     marModeBox.setBackground(registerForeground);
     marModeBox.setFont(new Font("Dialog", 0, 11));
     marModeBox.addActionListener(new ActionListener() {
@@ -1141,17 +1141,17 @@ public class MarieSim extends JFrame {
     mbrPanel.setBorder(BorderFactory.createRaisedBevelBorder());
     mbrPanel.setBackground(registerForeground);
     mbrPanel.setLayout(new FlowLayout());
-    mbrLabel.setPreferredSize(new Dimension(30, 15));  
+    mbrLabel.setPreferredSize(new Dimension(30, 15));
     mbrLabel.setFont(new Font("Dialog", 1, 12));
     mbrLabel.setText("MBR");
     mbrLabel.setForeground(registerTextColor);
     mbrLabel.setToolTipText("Memory Buffer Register");
     regMBR.setPreferredSize(new Dimension(52, 20));
-    regMBR.setBorder(BorderFactory.createLoweredBevelBorder()); 
+    regMBR.setBorder(BorderFactory.createLoweredBevelBorder());
     regMBR.setFont(new Font("Monospaced", 0, 14));
     regMBR.setValue(0);
     regMBR.setEditable(false);
-    mbrModeBox.setPreferredSize(new Dimension(57, 20)); 
+    mbrModeBox.setPreferredSize(new Dimension(57, 20));
     mbrModeBox.setBackground(registerForeground);
     mbrModeBox.setFont(new Font("Dialog", 0, 11));
     mbrModeBox.addActionListener(new ActionListener() {
@@ -1171,17 +1171,17 @@ public class MarieSim extends JFrame {
     pcPanel.setBorder(BorderFactory.createRaisedBevelBorder());
     pcPanel.setBackground(registerForeground);
     pcPanel.setLayout(new FlowLayout());
-    pcLabel.setPreferredSize(new Dimension(30, 15));  
+    pcLabel.setPreferredSize(new Dimension(30, 15));
     pcLabel.setFont(new Font("Dialog", 1, 12));
     pcLabel.setText("PC");
     pcLabel.setForeground(registerTextColor);
     pcLabel.setToolTipText("Program counter");
-    regPC.setPreferredSize(new Dimension(52, 20)); 
-    regPC.setBorder(BorderFactory.createLoweredBevelBorder());  
+    regPC.setPreferredSize(new Dimension(52, 20));
+    regPC.setBorder(BorderFactory.createLoweredBevelBorder());
     regPC.setFont(new Font("Monospaced", 0, 14));
     regPC.setValue(0);
     regPC.setEditable(false);
-    pcModeBox.setPreferredSize(new Dimension(57, 20)); 
+    pcModeBox.setPreferredSize(new Dimension(57, 20));
     pcModeBox.setBackground(registerForeground);
     pcModeBox.setFont(new Font("Dialog", 0, 11));
     pcModeBox.addActionListener(new java.awt.event.ActionListener() {
@@ -1197,18 +1197,18 @@ public class MarieSim extends JFrame {
 /* --                                                                                 -- */
 /* -- Input Register (INPUT)                                                          -- */
 /* --                                                                                 -- */
-    inputPanel.setPreferredSize(new Dimension(172, 35));  
+    inputPanel.setPreferredSize(new Dimension(172, 35));
     inputPanel.setLayout(new FlowLayout());
-    inputPanel.setBorder(BorderFactory.createRaisedBevelBorder()); 
+    inputPanel.setBorder(BorderFactory.createRaisedBevelBorder());
     inputPanel.setBackground(registerForeground);
-    inputLabel.setPreferredSize(new Dimension(33, 15)); 
-    inputLabel.setFont(new Font("Dialog", 1, 11)); 
+    inputLabel.setPreferredSize(new Dimension(33, 15));
+    inputLabel.setFont(new Font("Dialog", 1, 11));
     inputLabel.setText("INPUT");
     inputLabel.setForeground(registerTextColor);
     inputLabel.setToolTipText("Input Register");
-    regINPUT.setPreferredSize(new Dimension(52, 20));  
-    regINPUT.setBorder(BorderFactory.createLoweredBevelBorder());  
-    regINPUT.setFont(new Font("Monospaced", 0, 14));    
+    regINPUT.setPreferredSize(new Dimension(52, 20));
+    regINPUT.setBorder(BorderFactory.createLoweredBevelBorder());
+    regINPUT.setFont(new Font("Monospaced", 0, 14));
     regINPUT.setValue(0);
     regINPUT.setMode(ASCII);
     regINPUT.setEditable(false);
@@ -1217,7 +1217,7 @@ public class MarieSim extends JFrame {
         input();
       }
     }); // Listener
-    inputModeBox.setPreferredSize(new Dimension(57, 20)); 
+    inputModeBox.setPreferredSize(new Dimension(57, 20));
     inputModeBox.setBackground(registerForeground);
     inputModeBox.setFont(new Font("Dialog", 0, 11));
     inputModeBox.setSelectedIndex(2);                            // Default input to ASCII
@@ -1228,9 +1228,9 @@ public class MarieSim extends JFrame {
       }
     }); // Listener
     inputPanel.add(inputLabel);
-    inputPanel.add(regINPUT);  
-    inputPanel.add(inputModeBox);  
-    registersPanel.add(inputPanel);    
+    inputPanel.add(regINPUT);
+    inputPanel.add(inputModeBox);
+    registersPanel.add(inputPanel);
     mainPanel.add(registersPanel);      // Put the registers container in the center panel.
 /* --                                                                                 -- */
 /* -- Panel for output register (OUTPUT)                                              -- */
@@ -1293,7 +1293,7 @@ public class MarieSim extends JFrame {
     outputInnerPanel.add(outputControlBox);
 
     outputOuterPanel.add(outputInnerPanel);
-    mainPanel.add(outputOuterPanel);                   
+    mainPanel.add(outputOuterPanel);
     simulatorPane.add(mainPanel);         //  Add the center panel to the main screen.
 
 /* --                                                                                 -- */
@@ -1338,44 +1338,44 @@ public class MarieSim extends JFrame {
 *  Much of the code in this method was derived from Eckstein, Loy and Wood's fine book,   *
 *  *Java Swing* O'Reilly 1998.                                                            *
 ******************************************************************************************/
-    class ProgramTableCellRenderer extends JLabel 
-                                    implements TableCellRenderer { 
-     public Component getTableCellRendererComponent( 
-                                   JTable table, Object value, boolean isSelected, 
-                                   boolean hasFocus, int row, int column)          { 
-       setText((String) value); 
+    class ProgramTableCellRenderer extends JLabel
+                                    implements TableCellRenderer {
+     public Component getTableCellRendererComponent(
+                                   JTable table, Object value, boolean isSelected,
+                                   boolean hasFocus, int row, int column)          {
+       setText((String) value);
        setFont(new Font("Monospaced", 0, 12));
-       setOpaque(true); 
-       setBackground(Color.white); 
-       setForeground(Color.black); 
-       setBorder(new EmptyBorder(0, 0, 0, 0)); 
-       if (row == programFocusRow) {                        
-         setBackground(Color.green);     // Highlight the currently-executing                             
+       setOpaque(true);
+       setBackground(Color.white);
+       setForeground(Color.black);
+       setBorder(new EmptyBorder(0, 0, 0, 0));
+       if (row == programFocusRow) {
+         setBackground(Color.green);     // Highlight the currently-executing
        }                                 // instruction in green.
-       else {                                                        
-        setBackground(Color.white);                                  
-       }                         
-       return this; 
+       else {
+        setBackground(Color.white);
+       }
+       return this;
     } // getTableCellRendererComponent()
   } // ProgramTableCellRenderer
 
-    class RowHeaderTableCellRenderer extends JLabel 
-                                    implements TableCellRenderer { 
-     public Component getTableCellRendererComponent( 
-                                   JTable table, Object value, boolean isSelected, 
-                                   boolean hasFocus, int row, int column)          { 
+    class RowHeaderTableCellRenderer extends JLabel
+                                    implements TableCellRenderer {
+     public Component getTableCellRendererComponent(
+                                   JTable table, Object value, boolean isSelected,
+                                   boolean hasFocus, int row, int column)          {
        if (column > 0) {
          setText((String) value);
-         setBackground(Color.lightGray); 
+         setBackground(Color.lightGray);
        }
        setToolTipText("Check box to set breakpoint.");
        setFont(new Font("sanserif", 0, 11));
        setForeground(new Color(0, 50, 165));
-       return this; 
+       return this;
     } // getTableCellRendererComponent()
   } // RowHeaderTableCellRenderer
 
-    TableColumnModel cm = new DefaultTableColumnModel() { 
+    TableColumnModel cm = new DefaultTableColumnModel() {
       int colno = 0;                              // This is the column
       public void addColumn(TableColumn tc) {     // model for the main
         switch (colno) {                          // part of the program
@@ -1401,13 +1401,13 @@ public class MarieSim extends JFrame {
       }
     };  // TableColumnModel
 
-   TableColumnModel rowHeaderModel = new DefaultTableColumnModel() { 
-      int twocols = 0;                           // This is the column 
+   TableColumnModel rowHeaderModel = new DefaultTableColumnModel() {
+      int twocols = 0;                           // This is the column
       public void addColumn(TableColumn tc) {    // model for first two
         if (twocols < 2) {                       // columns only.
-           if (twocols == 0) 
+           if (twocols == 0)
              tc.setMaxWidth(20);
-           else 
+           else
              tc.setMaxWidth(40);
            twocols++;
            super.addColumn(tc);
@@ -1417,12 +1417,12 @@ public class MarieSim extends JFrame {
 
     programTable = new JTable(ptm, cm);
     programTable.setRowSelectionAllowed(false);             // Prohibit mouse clicks
-    programTable.setCellSelectionEnabled(false);            // from highlighting 
+    programTable.setCellSelectionEnabled(false);            // from highlighting
     programTable.setSelectionBackground(Color.white);       // cells.
-    programTable.setShowHorizontalLines(false);             // Gridline control: we 
-    programTable.setShowVerticalLines(false);               // turn everything off and  
-    programTable.setIntercellSpacing(new Dimension(0, 1));  // zero out borders so the 
-                                                            // highlight will look like 
+    programTable.setShowHorizontalLines(false);             // Gridline control: we
+    programTable.setShowVerticalLines(false);               // turn everything off and
+    programTable.setIntercellSpacing(new Dimension(0, 1));  // zero out borders so the
+                                                            // highlight will look like
     programTable.setRowHeight(PROGRAM_TABLE_ROW_HEIGHT);    // a solid bar.
     ProgramTableCellRenderer renderer = new ProgramTableCellRenderer();
     programTable.setDefaultRenderer(Object.class, renderer);
@@ -1432,7 +1432,7 @@ public class MarieSim extends JFrame {
     tableHeader.setFont(new Font("Dialog", 0, 11));
     tableHeader.setReorderingAllowed(false);
     tableHeader.setResizingAllowed(false);
-    tableHeader.setBorder(new EtchedBorder(EtchedBorder.LOWERED)); 
+    tableHeader.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
     programTable.createDefaultColumnsFromModel();
 
     JTable headerColumn = new JTable(ptm, rowHeaderModel);
@@ -1489,41 +1489,41 @@ public class MarieSim extends JFrame {
 *  Much of the code in this method was derived from Eckstein, Loy and Wood's fine book,   *
 *  *Java Swing* O'Reilly 1998.                                                            *
 ******************************************************************************************/
-    class MemoryTableCellRenderer extends JLabel 
-                                    implements TableCellRenderer { 
-     public Component getTableCellRendererComponent( 
-                                   JTable table, Object value, boolean isSelected, 
-                                   boolean hasFocus, int row, int column)          { 
-       setText((String) value); 
+    class MemoryTableCellRenderer extends JLabel
+                                    implements TableCellRenderer {
+     public Component getTableCellRendererComponent(
+                                   JTable table, Object value, boolean isSelected,
+                                   boolean hasFocus, int row, int column)          {
+       setText((String) value);
        setFont(new Font("Monospaced", 0, 11));
-       setOpaque(true); 
-       setBackground(Color.white); 
-       setForeground(Color.black); 
-       setBorder(new EmptyBorder(0, 0, 0, 0)); 
+       setOpaque(true);
+       setBackground(Color.white);
+       setForeground(Color.black);
+       setBorder(new EmptyBorder(0, 0, 0, 0));
        if (((row * 16) + column) == memoryFocusCell) {     // Set the green cell
          setBackground(Color.green);                       // highlight if the
-       }                                                   // application is using 
+       }                                                   // application is using
        else {                                              // the cell.
-        setBackground(Color.white);                                  
+        setBackground(Color.white);
        }
-       return this; 
+       return this;
     } // getTableCellRendererComponent()
   } // MemoryTableCellRenderer
 
-    class RowHeaderTableCellRenderer extends JLabel 
-                                    implements TableCellRenderer { 
-     public Component getTableCellRendererComponent( 
-                                   JTable table, Object value, boolean isSelected, 
-                                   boolean hasFocus, int row, int column)          { 
-       setText((String) value); 
+    class RowHeaderTableCellRenderer extends JLabel
+                                    implements TableCellRenderer {
+     public Component getTableCellRendererComponent(
+                                   JTable table, Object value, boolean isSelected,
+                                   boolean hasFocus, int row, int column)          {
+       setText((String) value);
        setFont(new Font("Dialog", 0, 11));
        setForeground(tableHeaderColor);
-       return this; 
+       return this;
     } // getTableCellRendererComponent()
   } // RowHeaderTableCellRenderer
 
     TableModel tm = new AbstractTableModel () {
-      String headers[] =  { " ", "+0", "+1", "+2", "+3", "+4", "+5", "+6", "+7", 
+      String headers[] =  { " ", "+0", "+1", "+2", "+3", "+4", "+5", "+6", "+7",
                                  "+8", "+9", "+A", "+B", "+C", "+D", "+E", "+F" };
       public int getColumnCount()                { return headers.length; }
       public int getRowCount()                   { return 256;  }
@@ -1535,7 +1535,7 @@ public class MarieSim extends JFrame {
         memoryArray[row][col] = value;        // Only one column is editable,
         fireTableDataChanged();               // set by isCellEditable method.
       }
-      public Class getColumnClass(int c) {    // This method is used to provide 
+      public Class getColumnClass(int c) {    // This method is used to provide
         return getValueAt(0, c).getClass();   // the default cell editor.  I.e.,
       }                                       // Booleans display as checkboxes.
 
@@ -1546,7 +1546,7 @@ public class MarieSim extends JFrame {
       public void addColumn(TableColumn tc) {             // for the main memory
         if (first) {                                      // contents.
           first = false;
-          return; 
+          return;
         }
         tc.setMinWidth(40);
         tc.setMaxWidth(40);
@@ -1559,7 +1559,7 @@ public class MarieSim extends JFrame {
       boolean first = true;                               // This is the column model
       public void addColumn(TableColumn tc) {             // for the first column which
         if (first) {                                      // contains the memory
-           tc.setMaxWidth(30);                            // addresses in increments 
+           tc.setMaxWidth(30);                            // addresses in increments
            super.addColumn(tc);                           // of 16.
            first = false;
         }
@@ -1569,7 +1569,7 @@ public class MarieSim extends JFrame {
     memoryTable = new JTable(tm, cm);
     memoryTable.setRowSelectionAllowed(false);
     memoryTable.setCellSelectionEnabled(false);
-    memoryTable.setSelectionBackground(Color.white); 
+    memoryTable.setSelectionBackground(Color.white);
     memoryTable.setShowHorizontalLines(false);             // Turn off all gridlines.
     memoryTable.setShowVerticalLines(false);
     memoryTable.setRowHeight(MEMORY_TABLE_ROW_HEIGHT);
@@ -1581,7 +1581,7 @@ public class MarieSim extends JFrame {
     jth.setFont(new Font("Dialog", 0, 11));
     jth.setReorderingAllowed(false);
     jth.setResizingAllowed(false);
-    jth.setBorder(new EtchedBorder(EtchedBorder.LOWERED)); 
+    jth.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
     memoryTable.createDefaultColumnsFromModel();
 
     JTable headerColumn = new JTable(tm, rowHeaderModel);
@@ -1590,9 +1590,9 @@ public class MarieSim extends JFrame {
     headerColumn.setBackground(Color.lightGray);
     headerColumn.setOpaque(false);
     headerColumn.setShowVerticalLines(false);
-    headerColumn.setSelectionBackground(Color.lightGray);  // Make header selection 
+    headerColumn.setSelectionBackground(Color.lightGray);  // Make header selection
                                                            // invisible.
-    headerColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED)); 
+    headerColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
     headerColumn.setColumnSelectionAllowed(false);
     headerColumn.setCellSelectionEnabled(false);
     RowHeaderTableCellRenderer headerRenderer = new RowHeaderTableCellRenderer();
@@ -1620,7 +1620,7 @@ public class MarieSim extends JFrame {
     JScrollPane jsp = new JScrollPane(memoryTable);
     jsp.setRowHeader(jv);
     return jsp;
-  } // createMemoryPane() 
+  } // createMemoryPane()
 
 /* --                                                                                 -- */
 /* --  Marie frame control methods.                                                   -- */
@@ -1659,8 +1659,8 @@ public class MarieSim extends JFrame {
 *  notified that the application is done.                                                 *
 ******************************************************************************************/
      try {
-           marieEditor.show(); 
-           marieEditor.requestFocus();   
+           marieEditor.show();
+           marieEditor.requestFocus();
      }
      catch (Exception e) {
            if (mexFile != null) {
@@ -1673,9 +1673,9 @@ public class MarieSim extends JFrame {
            marieEditor.addWindowListener(new WindowAdapter() {
               public void windowClosing(WindowEvent e) {
                    marieEditor = null;
-              } // windowClosing()            
-           }); // Listener         
-     }   
+              } // windowClosing()
+           }); // Listener
+     }
   } // displayEditorFrame()
 
   void displayDelayFrame() {
@@ -1690,16 +1690,16 @@ public class MarieSim extends JFrame {
 ******************************************************************************************/
      try {
            delayFrame.show();
-           delayFrame.requestFocus();   
+           delayFrame.requestFocus();
      }
-     catch (Exception e) {  
+     catch (Exception e) {
            delayFrame = new DelayFrame();
            delayFrame.addWindowListener(new WindowAdapter() {
               public void windowClosing(WindowEvent e) {
                    delayFrame = null;
               } // windowClosing()
            }); // Listener
-     }                               
+     }
   } //displayDelayFrame()
 
   void displayHelpAboutFrame() {
@@ -1708,17 +1708,17 @@ public class MarieSim extends JFrame {
 ******************************************************************************************/
      try {
            helpAboutFrame.show();
-           helpAboutFrame.requestFocus();   
+           helpAboutFrame.requestFocus();
      }
-     catch (Exception e) {  
+     catch (Exception e) {
            helpAboutFrame = new HelpAboutFrame(this);
            helpAboutFrame.addWindowListener(new WindowAdapter() {
               public void windowClosing(WindowEvent e) {
                    helpAboutFrame = null;
               } // windowClosing()
            }); // Listener
-     }                               
-  } //displayHelpAboutFrame()  
+     }
+  } //displayHelpAboutFrame()
 
   void displayCoreDump() {
 /******************************************************************************************
@@ -1730,17 +1730,17 @@ public class MarieSim extends JFrame {
      }
      catch (Exception e1) {
             try {
-                  dumpFrame.requestFocus();   
+                  dumpFrame.requestFocus();
             }
             catch (Exception e2) {
-                  dumpFrame = new CoreDumpFrame(); 
+                  dumpFrame = new CoreDumpFrame();
                   dumpFrame.addWindowListener(new WindowAdapter() {
                       public void windowClosing(WindowEvent e) {
                            dumpFrame = null;
                       } // windowClosing()
-                  }); // Listener 
+                  }); // Listener
             }
-     }                               
+     }
   } //displayCoreDump()
 
 
@@ -1750,9 +1750,9 @@ public class MarieSim extends JFrame {
 ******************************************************************************************/
      try {
            symbolTable.show();
-           symbolTable.requestFocus();   
+           symbolTable.requestFocus();
      }
-     catch (Exception e) {         
+     catch (Exception e) {
               symbolTable = new TextFileViewer("Symbol Table",mexFile+MAP_TYPE, false);
               symbolTable.setSize(200, 280);
               symbolTable.setLocation(550, 40);
@@ -1760,10 +1760,10 @@ public class MarieSim extends JFrame {
                   public void windowClosing(WindowEvent e) {
                        symbolTable = null;
                   } // windowClosing()
-              }); // Listener 
+              }); // Listener
               symbolTable.show();
      }
-  } // displaySymbolTable() 
+  } // displaySymbolTable()
 
 
   void displayHelpFrame() {
@@ -1774,7 +1774,7 @@ public class MarieSim extends JFrame {
            helpViewer.show();
            helpViewer.requestFocus();
      }
-     catch (Exception e) {         
+     catch (Exception e) {
               helpViewer = new TextFileViewer("Simulator Help", HELP_FILE, false);
               helpViewer.setSize(400, 280);
               helpViewer.setLocation(350, 50);
@@ -1782,7 +1782,7 @@ public class MarieSim extends JFrame {
                   public void windowClosing(WindowEvent e) {
                        helpViewer = null;
                   } // windowClosing()
-              }); // Listener 
+              }); // Listener
               helpViewer.show();
      }
   } // displayHelpFrame()
@@ -1801,38 +1801,38 @@ public class MarieSim extends JFrame {
      tempFile = new BufferedWriter( new FileWriter("msim.tmp") );
    } // try
    catch (IOException e) {
-     System.err.println(e); 
+     System.err.println(e);
    return;
    } // catch
-   try {            
+   try {
      tempFile.write(outputArea.getText());             // Capture the text in the
      tempFile.write(formFeed);                          // trace JTextArea.
-     tempFile.close();           
+     tempFile.close();
      }
    catch (IOException e) {
      System.err.println(e);
-     return;  
+     return;
    } // catch
                                                         // Print the file.
-   DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE; 
-   PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet(); 
-   PrintService printService [] = PrintServiceLookup.lookupPrintServices(flavor,pras); 
-   PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();      
+   DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+   PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+   PrintService printService [] = PrintServiceLookup.lookupPrintServices(flavor,pras);
+   PrintService defaultService = PrintServiceLookup.lookupDefaultPrintService();
    PrintService service =
-        ServiceUI.printDialog(null,100,100,printService,defaultService,flavor,pras); 
-   if (service != null) { 
+        ServiceUI.printDialog(null,100,100,printService,defaultService,flavor,pras);
+   if (service != null) {
       try {
-        DocPrintJob job = service.createPrintJob(); 
+        DocPrintJob job = service.createPrintJob();
         FileInputStream fis = new FileInputStream("msim.tmp");
-        DocAttributeSet das = new HashDocAttributeSet(); 
-        Doc doc = new SimpleDoc(fis, flavor, das); 
+        DocAttributeSet das = new HashDocAttributeSet();
+        Doc doc = new SimpleDoc(fis, flavor, das);
         job.print(doc, pras);
       } // try
       catch (Exception e) {
         ;
      } // catch
-   } 
-   try {              
+   }
+   try {
      File tmp = new File("msim.tmp");                  // Delete the temp file.
      tmp.delete();
      }
@@ -2017,7 +2017,7 @@ public class MarieSim extends JFrame {
 *    Dump memory between the starting and ending addresses (inclusive) supplied in the    *
 *    arguments.  The output is given in columns of eight addresses at a time.             *
 *    If either argument is negative, the entire contents of memory are shown.             *
-******************************************************************************************/ 
+******************************************************************************************/
     if ((start < 0) || (end < 0)) {
       start = 0;
       end = MAX_MARIE_ADDR;
@@ -2027,10 +2027,10 @@ public class MarieSim extends JFrame {
     dumpFile.write("       ");
     dumpFile.write("Memory dump for addresses "+to3CharHexStr(start));
     dumpFile.write(" through "+to3CharHexStr(end)+linefeed+linefeed);
-    for ( ; i <= MAX_MARIE_ADDR; i++) {                // Note:  If we get a value out of 
-      if (column == 0)                                 //   range for the ending address, we 
+    for ( ; i <= MAX_MARIE_ADDR; i++) {                // Note:  If we get a value out of
+      if (column == 0)                                 //   range for the ending address, we
         dumpFile.write(" "+to3CharHexStr(i)+":  ");    //   stop at the max address anyway.
-     dumpFile.write((memoryArray[i / 16][i % 16 + 1]).toString()+"  "); 
+     dumpFile.write((memoryArray[i / 16][i % 16 + 1]).toString()+"  ");
       if (i == end) {
         dumpFile.write(linefeed);
         return;
@@ -2049,8 +2049,8 @@ public class MarieSim extends JFrame {
 *  This is the driver method for the core dump.  Output is directed to a DMP file so      *
 *  that the user can read it in a display window, or print it through some other means.   *
 *  Once the dump is created, the resulting file is displayed in a viewer.                 *
-******************************************************************************************/ 
-    BufferedWriter dumpFile = null; 
+******************************************************************************************/
+    BufferedWriter dumpFile = null;
     boolean done = false;
     try {                                             // Try to open the output.
       dumpFile = new BufferedWriter( new FileWriter(mexFile+DMP_TYPE) );
@@ -2060,7 +2060,7 @@ public class MarieSim extends JFrame {
       return;
     } // catch
     catch (IOException e) {
-      setStatusMessage(" "+e); 
+      setStatusMessage(" "+e);
       return;
     } // catch
     try {
@@ -2069,13 +2069,13 @@ public class MarieSim extends JFrame {
        dumpRegs(dumpFile);                            // Dump the registers.
     } // try
     catch (Exception e) {
-      setStatusMessage(" "+e); 
+      setStatusMessage(" "+e);
     } // catch
     try {
        dumpMemory(start, end, dumpFile);              // Dump the address range specified.
     } // try
     catch (Exception e) {
-      setStatusMessage(" "+e); 
+      setStatusMessage(" "+e);
     } // catch
     try {
        dumpFile.write(formfeed);
@@ -2083,7 +2083,7 @@ public class MarieSim extends JFrame {
        dumpFile.close();
     } // try
     catch (IOException e) {
-      setStatusMessage(" "+e); 
+      setStatusMessage(" "+e);
     } // catch
     dumpViewer = new TextFileViewer("Core Dump", mexFile+DMP_TYPE, false);
     dumpViewer.setSize(600, 400);
@@ -2159,7 +2159,7 @@ public class MarieSim extends JFrame {
      dirEndPos = -1;
     else
       mexPath = aFileName.substring(0, dirEndPos);     // Save the path.
-    extensionStart = aFileName.lastIndexOf(MEX_TYPE);   
+    extensionStart = aFileName.lastIndexOf(MEX_TYPE);
     if (extensionStart > 0)                            // Save the root filename.
       mexFile = mexPath + fileSeparator + aFileName.substring(dirEndPos+1, extensionStart);
     try {
@@ -2207,7 +2207,7 @@ public class MarieSim extends JFrame {
 *  during the load, the machineState will be NO_PROGRAM_LOADED after the marieReset()     *
 *  call is performed.                                                                     *
 ******************************************************************************************/
-    File               objectFile = null; 
+    File               objectFile = null;
     ObjectInputStream   objFileIn = null;
     AssembledCodeLine   aCodeLine = new AssembledCodeLine();
     Vector             codeVector = new Vector();
@@ -2230,54 +2230,54 @@ public class MarieSim extends JFrame {
       errorFound = true;
     } // catch
     catch (IOException e) {
-      setStatusMessage(" "+e); 
+      setStatusMessage(" "+e);
       errorFound = true;
     } // catch
     catch (Exception e) {
-      setStatusMessage(" "+e); 
+      setStatusMessage(" "+e);
       errorFound = true;
     } // catch
     if (errorFound)                            // If we've found any problems,
       return;                                  // return to caller.
     marieReset();                              // Clear the simulator, including
-    if (codeLineCount >=0)                     // any program loaded.         
+    if (codeLineCount >=0)                     // any program loaded.
       for (int i = 0; i < codeLineCount; i++) {
         programArray[i][0] = new Boolean(false);
         programArray[i][1] = "  ";
         programArray[i][2] = "  ";
         programArray[i][3] = "  ";
         programArray[i][4] = "  ";
-        programArray[i][5] = "  "; 
+        programArray[i][5] = "  ";
       }
     codeLineCount = 0;
     boolean done = false;                      // Begin loading the program...
     while (!done) {
        if (codeLineCount >= MAX_MARIE_ADDR) {
-         setStatusMessage(" Maximum program statements reached."); 
+         setStatusMessage(" Maximum program statements reached.");
          errorFound = true;
          done = true;
        } // if
-       try {             
+       try {
           aCodeLine = (AssembledCodeLine) objFileIn.readObject();
           if (aCodeLine == null)
              done = true;
-          else { 
+          else {
             if (aCodeLine.lineNo.charAt(0) != ' ') {
               codeVector.add(aCodeLine);
               codeLineCount++;
             } // if
           } // else
        } // try
-       catch (EOFException e) {                // At EOF, we're done.  
+       catch (EOFException e) {                // At EOF, we're done.
          done = true;                          // Other exceptions are "fatal."
        } // catch
        catch (IOException e) {
-         setStatusMessage(" "+e);  
+         setStatusMessage(" "+e);
          errorFound = true;
          done = true;
        } // catch
       catch (Exception e) {
-        setStatusMessage(" "+e); 
+        setStatusMessage(" "+e);
         errorFound = true;
         done = true;
       } // catch
@@ -2285,16 +2285,16 @@ public class MarieSim extends JFrame {
         break;
     } // while
     try {                                      // Close the input.
-       objFileIn.close(); 
+       objFileIn.close();
        objectFile = null;
     } // try
     catch (IOException e) {
-       setStatusMessage(" "+e); 
+       setStatusMessage(" "+e);
     } // catch
     if (errorFound)                            // If we found serious errors, return
       return;                                  // to caller.
     int addr = 0;
-    programArray  = new Object[codeLineCount][6];    // Prepare program-specific data 
+    programArray  = new Object[codeLineCount][6];    // Prepare program-specific data
     codeReference.clear();                           // structures.
     Enumeration e = codeVector.elements();
     int lineCount = 0;
@@ -2306,7 +2306,7 @@ public class MarieSim extends JFrame {
       programArray[lineCount][2] = " "+aCodeLine.stmtLabel;
       programArray[lineCount][3] = aCodeLine.mnemonic;
       programArray[lineCount][4] = aCodeLine.operandToken;
-      programArray[lineCount][5] = " "+aCodeLine.hexCode+aCodeLine.operand; 
+      programArray[lineCount][5] = " "+aCodeLine.hexCode+aCodeLine.operand;
       codeReference.put(aCodeLine.lineNo, new Integer(lineCount));
       lineCount++;
       try {
@@ -2321,7 +2321,7 @@ public class MarieSim extends JFrame {
     String aString = (String) programArray[0][1];
     try {                                                  // Get memory cell of
           addr = Integer.parseInt(aString.trim(), 16);     // first instruction.
-    }                                               
+    }
     catch (NumberFormatException exception) {
            ;
     } // catch
@@ -2329,7 +2329,7 @@ public class MarieSim extends JFrame {
     int memoryCol = addr % 16 + 1;                         // of scrollpane.
     Rectangle rect = memoryTable
                        .getCellRect((memoryRow), memoryCol, false);
-    memoryTable.scrollRectToVisible(rect);                   
+    memoryTable.scrollRectToVisible(rect);
     regPC.setValue(addr);                                  // Set PC to first address
     regPC.postActionEvent();                               // of program.
     rect = programTable.getCellRect(0, 2, false);
@@ -2359,7 +2359,7 @@ public class MarieSim extends JFrame {
 *   that has been loaded.  If we find one, we activate the [Show Symbol Table] button.    *
 ******************************************************************************************/
     showSymbols.setEnabled(true);
-    try { // Prove the previous statement true or false...                       
+    try { // Prove the previous statement true or false...
           InputStream fileIn = new FileInputStream(mexFile+MAP_TYPE);
         }
     catch (IOException e) {                       // No listing file available!
@@ -2380,14 +2380,14 @@ public class MarieSim extends JFrame {
      fatalError = false;
      errorCode = 0;
      regINPUT.setEditable(false);
-     regINPUT.repaint();   
+     regINPUT.repaint();
      if (stepping) {
        setStatusMessage(" Press [Step] to start.");
        step.setEnabled(true);
      }
      else {
         setStatusMessage("  Press [Run] to start.");
-     }   
+     }
      regPC.setValue(((String) programArray[0][1]).trim()); // Set PC to first address of program loaded.
      Rectangle rect = programTable.getCellRect(0, 2, false);
      programFocusRow = 0;
@@ -2403,15 +2403,15 @@ public class MarieSim extends JFrame {
 *  clears everything.                                                                     *
 ******************************************************************************************/
     regAC.setValue(0);                          // Reset all registers to 0.
-    regAC.postActionEvent(); 
+    regAC.postActionEvent();
     regIR.setValue(0);
-    regIR.postActionEvent(); 
+    regIR.postActionEvent();
     regMAR.setValue(0);
-    regMAR.postActionEvent(); 
+    regMAR.postActionEvent();
     regMBR.setValue(0);
-    regMBR.postActionEvent(); 
+    regMBR.postActionEvent();
     regPC.setValue(0);
-    regPC.postActionEvent(); 
+    regPC.postActionEvent();
     regINPUT.setValue(0);
     regINPUT.setEditable(false);
     regOUTPUT.setValue(0);
@@ -2429,7 +2429,7 @@ public class MarieSim extends JFrame {
         programArray[i][2] = "  ";
         programArray[i][3] = "  ";
         programArray[i][4] = "  ";
-        programArray[i][5] = "  "; 
+        programArray[i][5] = "  ";
       }
     programFocusRow = 0;
     memoryFocusCell = 0;
@@ -2469,7 +2469,7 @@ public class MarieSim extends JFrame {
     memoryRow = addr / 16;                       // way because it's how the fetch-execute
     memoryCol = addr % 16 + 1;                   // process works.
     try {                                                             // Pull instruction
-      regIR.setValue((" "+(String) memoryArray[memoryRow][memoryCol]).trim()); // from memory 
+      regIR.setValue((" "+(String) memoryArray[memoryRow][memoryCol]).trim()); // from memory
       regIR.postActionEvent();                                        // into IR.
     }
     catch (ArrayIndexOutOfBoundsException e) {
@@ -2504,9 +2504,9 @@ public class MarieSim extends JFrame {
       try {
         Rectangle rect = memoryTable.getCellRect(memoryRow, memoryCol, false);
         memoryTable.scrollRectToVisible(rect);
-        regMBR.setValue((" "+memoryArray[memoryRow][memoryCol]).trim()); 
+        regMBR.setValue((" "+memoryArray[memoryRow][memoryCol]).trim());
         if (fatalError)
-          return; 
+          return;
         regMBR.postActionEvent();
       }
       catch (ArrayIndexOutOfBoundsException e) {
@@ -2521,7 +2521,7 @@ public class MarieSim extends JFrame {
        fatalError = true;
     }
     if (fatalError)
-      return; 
+      return;
     regPC.postActionEvent();
     errorFound = false;                            // Reset error flag.
     machineState = MARIE_RUNNING;
@@ -2567,7 +2567,7 @@ public class MarieSim extends JFrame {
   } // execute()
 
 
-  void jnS() { 
+  void jnS() {
 /******************************************************************************************
 *   Jump and Store: Store PC at address [MAR] and set PC (jump) to address [MAR]+1.       *
 *   (This instruction can be used to create subroutines in MARIE assembly language.)      *
@@ -2584,10 +2584,10 @@ public class MarieSim extends JFrame {
              errorCode = 3;
              fatalError = true;
      }
-   } // jnS() 
+   } // jnS()
 
- 
-  void load() { 
+
+  void load() {
 /******************************************************************************************
 *   Copies the operand from the MBR to the AC.  (The MBR is loaded during                 *
 *   instruction fetch.)                                                                   *
@@ -2608,7 +2608,7 @@ public class MarieSim extends JFrame {
      int memoryRow, memoryCol;
      regMBR.setValue(regAC.getValue());
      if (fatalError)
-       return; 
+       return;
      int addr = regMAR.getValue();
      memoryRow = addr / 16;
      memoryCol = addr % 16 + 1;
@@ -2625,25 +2625,25 @@ public class MarieSim extends JFrame {
    } // store()
 
 
-  void add() { 
+  void add() {
 /******************************************************************************************
 *   Adds the value in the MBR to the AC.  (The MBR is loaded during instruction fetch.)   *
 ******************************************************************************************/
      regAC.setValue(regAC.getValue() + regMBR.getValue());
      regAC.postActionEvent();
-   } // add() 
+   } // add()
 
 
-  void subt() { 
+  void subt() {
 /******************************************************************************************
 *   Subtracts the value in the MBR from the AC.                                           *
 ******************************************************************************************/
      regAC.setValue(regAC.getValue() - regMBR.getValue());
      regAC.postActionEvent();
-   } // subt() 
+   } // subt()
 
 
-  void input() { 
+  void input() {
 /******************************************************************************************
 *   This method is called twice to effect one input.  The first time through, the         *
 *   machine state is set to BLOCKED_ON_INPUT and the input register is enabled.  The      *
@@ -2665,7 +2665,7 @@ public class MarieSim extends JFrame {
        inputModeBox.setBackground(Color.pink);
        regINPUT.setEditable(true);                 // Enable register input.
        regINPUT.repaint();
-       regINPUT.requestFocus();      
+       regINPUT.requestFocus();
      }
      else if (machineState == MARIE_BLOCKED_ON_INPUT) {  // Second time through???
        regINPUT.setValue(regINPUT.getText());
@@ -2677,12 +2677,12 @@ public class MarieSim extends JFrame {
        if (fatalError) {
          halt();
          return;
-       } 
+       }
        regAC.setValue(regINPUT.getValue());
        if (fatalError) {
          halt();
          return;
-       } 
+       }
        regAC.repaint();
        machineState = MARIE_RUNNING;             // Reset the machine state.
        if (stepping)                             // Proceed with next instruction
@@ -2691,14 +2691,14 @@ public class MarieSim extends JFrame {
          setStatusMessage(" ");
          if (breakpointOn)
            runToBreakpoint();
-         else  
+         else
            runProgram();
        }
      } // else
    } // input()
 
 
-  void output() { 
+  void output() {
 /******************************************************************************************
 *   Copies the value in the AC to the output register and concatenates the value to       *
 *   the text output vector.  Note:  The output appearance is controlled by the radix      *
@@ -2715,10 +2715,10 @@ public class MarieSim extends JFrame {
           outputArea.append(linefeed);
      Document d = outputArea.getDocument();
      outputArea.select(d.getLength(), d.getLength());
-   } // output() 
+   } // output()
 
 
-  void halt() { 
+  void halt() {
 /******************************************************************************************
 *   Changes the machine state from (probably) RUNNING to HALTED using the fatalError      *
 *   boolean to determine which one is which.  The statusMessage is also loaded with       *
@@ -2739,14 +2739,19 @@ public class MarieSim extends JFrame {
     }
    } // halt()
 
-  void skipCond() { 
+  void skipCond() {
 /******************************************************************************************
 *   This instruction will skip over the instruction at PC+1 based on the value in the     *
 *   instruction's lower 12 bits.                                                          *
 ******************************************************************************************/
+     /*
+     Original implementation:
+
      int cond = regIR.getValue();
      cond = cond & 0x0C00;   // Strip the opcode from the instruction.
      cond = cond >> 10;      // Shift the conditional to the low-order bits.
+
+     TODO: bug? should be (cond >= 3)?
      if (cond == 3) {        // Check valid values for condition 0, 1, & 2.
       fatalError = true;
       errorCode = 2;
@@ -2758,13 +2763,52 @@ public class MarieSim extends JFrame {
           ||((accumulator > 0) && (cond == 2))) {  // Skip if accumulator positive.
        regPC.setValue(regPC.getValue()+1);
        if (fatalError)
-         return; 
+         return;
        regPC.postActionEvent();
      }
+     */
+
+     /*
+     New implementation:
+     First 2 bits of address portion of instruction are still used to store the comparison operator.
+     Other 10 bits are used to store an operand which will be compared to the value in the AC.
+     */
+     int instruction = regIR.getValue();
+     int comparisonOperator = (instruction & 0x0c00) >> 10;
+
+     // Check that instruction contains valid comparison operator
+     if (comparisonOperator >= 3) {
+     	fatalError = true;
+      	errorCode = 2;
+      	return;
+     }
+
+     int accumulatorValue = regAC.getValue();
+     int operand = instruction & 0x03ff;
+
+     switch (comparisonOperator) {
+     	case 0:
+		if (accumulatorValue < operand)
+			regPC.setValue(regPC.getValue() + 1);
+		break;
+	case 1:
+		if (accumulatorValue == operand)
+			regPC.setValue(regPC.getValue() + 1);
+		break;
+	case 2:
+		if (accumulatorValue > operand)
+			regPC.setValue(regPC.getValue() + 1);
+		break;
+     }
+
+     if (fatalError)
+     	return;
+
+     regPC.postActionEvent();
    } // skipCond()
 
 
-  void jump() { 
+  void jump() {
 /******************************************************************************************
 *   Move the value in the instruction's lower 12 bits to the PC (which always             *
 *   contains the memory address of the next instruction to execute).                      *
@@ -2773,12 +2817,12 @@ public class MarieSim extends JFrame {
      addr = addr & 0x0FFF;        // Strip the opcode from the instruction,
      regPC.setValue(addr);        // leaving the address.
      if (fatalError)
-       return; 
+       return;
      regPC.postActionEvent();
    } // jump()
 
 
-  void clear() { 
+  void clear() {
 /******************************************************************************************
 *   Clears the accumulator.                                                               *
 ******************************************************************************************/
@@ -2787,7 +2831,7 @@ public class MarieSim extends JFrame {
    } // clear()
 
 
-  void addI() { 
+  void addI() {
 /******************************************************************************************
 *   addI adds to the accumulator the value that is found in memory at the location        *
 *   pointed to by the memory address in the MBR. So to get the augend, we need to         *
@@ -2802,7 +2846,7 @@ public class MarieSim extends JFrame {
      int memoryRow = addr / 16;
      int memoryCol = addr % 16 + 1;
      try {
-           regMBR.setValue(" "+memoryArray[memoryRow][memoryCol]); 
+           regMBR.setValue(" "+memoryArray[memoryRow][memoryCol]);
            regMAR.postActionEvent();
            regMBR.postActionEvent();
            add();
@@ -2815,7 +2859,7 @@ public class MarieSim extends JFrame {
    } // addI()
 
 
-  void jumpI() { 
+  void jumpI() {
 /******************************************************************************************
 *   Similar to ADDI, the address of the address to jump to can be found at the            *
 *   address to which the MBR is pointing.  After the fetch cycle, the MBR                 *
@@ -2824,7 +2868,7 @@ public class MarieSim extends JFrame {
 ******************************************************************************************/
      regPC.setValue(regMBR.getValue());
      if (fatalError)
-       return; 
+       return;
      regPC.postActionEvent();
    } // jumpI()
 
@@ -2862,12 +2906,12 @@ public class MarieSim extends JFrame {
              execute();
            }
            isBreakpoint = (Boolean) programArray[lastStatementRun][0];
-           if ((machineState == MARIE_RUNNING) 
+           if ((machineState == MARIE_RUNNING)
                && (isBreakpoint.booleanValue()))  {    // Check for a breakpoint.
              machineState = MARIE_PAUSED;              // If we find one, pause.
-             setStatusMessage(" Stopped for breakpoint."); 
+             setStatusMessage(" Stopped for breakpoint.");
            }
-           repaint();   
+           repaint();
          } // while
        } // run()
      }; // runIt
