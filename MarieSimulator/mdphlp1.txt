@@ -1,0 +1,67 @@
+MARIE Data Path Simulator Help - Version 1.0
+
+Getting Started
+
+The MARIE machine environment animates the data 
+path activities that take place within the MARIE
+computer. This simulator traces the execution of
+an assembled MARIE assembly language program as
+data is moved between each of the registers and
+main memory. When the value stored in a register
+changes, the contents of all registers are 
+printed in the trace window.
+
+Running a Program
+
+Before you can run a program in the simulator, 
+you must first assemble it using the facilities
+of the main MARIE machine simulator, MarieSim. 
+Once you have an executable program, load it 
+and run it using the buttons in the menu bar 
+of the simulator.
+
+To observe the details of the data movement, 
+you can slow down the execution speed using the
+[Set Speed] menu bar button. We have noticed 
+that when the speed is set so that execution is
+very slow, the "fetch" process of the fetch-
+decode-execute cycle can become boring to watch
+over and over.  To relieve this boredom, we 
+have provided a [Fast Fetch Mode x] button 
+to bypass the delay during the instruction 
+fetch process. 
+
+While your program is running, components
+that are involved in a data trnsfer operation 
+change to a bright color. The control unit
+determines when each component will be 
+activated. 
+
+As explained in the text, each register has 
+an identifying number.  This value determines 
+which register will be read from, and which 
+will be written to.  The control unit sets 
+the binary number of each register on the 
+read and write control lines according to 
+the needs of the instruction being executed. 
+The register numbers (in decimal) are as 
+follows:
+
+   IR  = 7  OUT = 6  IN  = 5
+   AC  = 4  MBR = 3  PC  = 2
+   MAR = 1  Main memory = 0
+
+When you run a program, you will see how 
+these binary numbers translate into control
+signals on the control lines.
+
+Using the controls on the menu bar, you can 
+run or stop execution, step through execution,
+and reset the simulator.
+
+When you are finished, you may print the 
+contents of the register trace as a record
+of the activites that have taken place in 
+the data path simulator.
+
+

@@ -1,0 +1,39 @@
+This editor allows you to type and assemble code for 
+the MARIE machine simulator system.  Each line of 
+your program must end with a carriage-return linefeed 
+sequence.  (That is, you must press the [Enter] key 
+after you have completed each of your assembly code 
+statements.)  
+
+Tabs are set to 8 characters, and may be used to 
+delimit statement labels from mnemonics and operands.  
+You may use spaces instead if you wish.
+
+The format of a MARIE assembly language source 
+statement is:
+
+  [<label>,] operator [operand] [/<comment>]
+
+where the statement label <label> is comma-delimited 
+and optional, and comments <comment> are delimited by 
+a slash.
+
+The assembler will take statement labels (and operand 
+symbolic names) of virtually any length (up to the 
+limits of Java's String class).
+
+Blank lines are permitted, as are lines containing 
+only comments.Labeled statements must contain an 
+operator (assembly code mnemonic), and an operand if 
+one is required.
+
+A "cheat sheet" with MARIE mnemonics can be displayed 
+through the other "help" menu button.
+
+When you have completed your work, you will need to 
+save and assemble your file before it can be run in 
+the simulator.  If your code contains errors, the 
+error listing will be displayed in a separate window 
+so you can correct your code in the editor and 
+reassemble it.
+

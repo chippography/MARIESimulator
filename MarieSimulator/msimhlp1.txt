@@ -1,0 +1,98 @@
+MARIE Simulator Help - Version 1.2
+
+Getting Started
+
+The MARIE machine environment simulates the behavior 
+of a computer with a one-memory-address instruction 
+set architecture. The MARIE simulator environment 
+runs programs that you write using the MARIE single-
+address assembly language.
+
+To write a MARIE program from scratch within the 
+simulator environment, you can use the File | Edit 
+option to invoke a simple editor.  You may also use 
+any plain text editor for this purpose, making sure 
+that the file that you save ends with the extension 
+".mas" which is case-sensitive.  You can assemble 
+your file using a menu option selectable within the 
+editor itself.
+
+Running a Program
+
+Before you can run your program in the simulator, 
+you must first assemble it (using the editor's 
+assembly option) then load it using the 
+File | Load option.  If you've made changes to an 
+assembed file, you must reload it using 
+File | Reload or File | Load before your changes 
+will take effect in the simulator.
+
+The MARIE simulator supports several animation modes. 
+You can execute one instruction at a time by selecting 
+Run | Set Step Mode | On, or you may prefer to have 
+the computer run your program without your inter-
+vention. By default, the MARIE simulator waits 10 
+milliseconds (ms) between each instruction execution.  
+(10 ms is the minimum wait between instruction cycles.  
+You cannot set it any lower than 10ms.)  You may set 
+the execution delay as high as 3000 ms using 
+Run | Set Delay. 
+
+Output
+
+The MARIE simulator defaults output to linefeed-ter-
+minated ASCII. You can reset these defaults using 
+combo boxes on the output window.  So if you'd rather 
+have 65 + 1 = 66, not B, you'll want to reset the 
+mode of the output to decimal.
+
+Breakpoint Options
+
+The MARIE simulator supports breakpoint processing 
+through the use of checkboxes associated with each 
+program instruction. The breakpoint checkboxes are 
+displayed with the program instructions in the monitor
+window of the simulator.  You can enter or remove a 
+checkmark in any of the boxes through a mouse click.
+The checkmarks tell the simulator to pause at the 
+instruction that is checked when you select the  
+Breakpoints | Run to Breakpoint menu option.  
+Note:  If you have set a breakpoint at a "Halt" 
+instruction, the "Run to Breakpoint" option will 
+first execute a "Restart" then proceed to run your 
+program from the beginning.
+
+To reset (or clear) all breakpoints from the monitor, 
+select the Breakpoints | Reset Breakpoints menu option.
+
+Miscellany
+
+The MARIE simulator provides additional menu options 
+for:
+
+Restarting the Simulator: Run | Restart 
+          resets the program counter to the start 
+          of the program.  This is not to be confused 
+          with...
+
+Resetting the Simulator:  Run | Reset Simulator
+          which clears everything from the system, 
+          just like pressing the [Reset] button on a 
+          personal computer.  Because this option wipes 
+          out everything, you will be asked for 
+          confirmation before the simulator is reset.
+
+Stopping a Program:  The [Stop]button will be enabled 
+          when you are running a program from the 
+          Run | Run or Breakpoints | Run to Breakpoint 
+          selections, the button will be enabled.  You 
+          can use this button to stop program execution.
+
+Symbol Table Display:  The [Symbol Map] button shows 
+          the symbol table (if one exists) for the 
+          currently-loaded program.
+
+Refer to your text for more details regarding the 
+instruction set architecture and fetch-execute 
+processing of this machine.
+

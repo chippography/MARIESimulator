@@ -1,0 +1,31 @@
+ Mnemonic   | Hex | Description
+ -----------+-----+-----------------------------------------------
+ Add X      |  3  | Add the contents of address X to AC		
+ AddI X     |  B  | Add indirect: Use the value at X as the actual 
+            |     | address of the data operand to add to AC
+ Clear      |  A  | Put all zeros in AC
+ Input      |  5  | Input a value from the keyboard into AC
+ Halt       |  7  | Terminate program
+ Jump X     |  9  | Load the value of X into PC
+ JumpI X    |  C  | Use the value at X as the address to jump to
+ JnS X      |  0  | Store the PC at address X and jump to X+1
+ Load X     |  1  | Load contents of address X into AC
+ Output     |  6  | Output the value in AC to the display
+ Skipcond X |  8  | Skip next instruction on condition 
+            |     | (See note below.)
+ Store X    |  2  | Store the contents of AC at address X
+ Subt X	    |  4  | Subtract the contents of address X from AC
+ -----------------------------------------------------------------
+ Note regarding use of SKIPCOND:
+   The two address bits closest to the opcode field, bits 10 and 
+   11 specify the condition to be tested. If the two address bits 
+   are 00, this translates to "skip if the AC is negative". If the 
+   two address bits are 01, this translates to "skip if the AC is 
+   equal to 0". Finally, if the two address bits are 10 (or 2), 
+   this translates to "skip if the AC is greater than 0".		
+
+   Example: the instruction Skipcond 800 will skip the 
+            instruction that follows if the AC is 
+            greater than 0.
+ -----------------------------------------------------------------
+
