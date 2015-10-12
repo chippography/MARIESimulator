@@ -2751,7 +2751,6 @@ public class MarieSim extends JFrame {
      cond = cond & 0x0C00;   // Strip the opcode from the instruction.
      cond = cond >> 10;      // Shift the conditional to the low-order bits.
 
-     TODO: bug? should be (cond >= 3)?
      if (cond == 3) {        // Check valid values for condition 0, 1, & 2.
       fatalError = true;
       errorCode = 2;
@@ -2777,7 +2776,7 @@ public class MarieSim extends JFrame {
      int comparisonOperator = (instruction & 0x0c00) >> 10;
 
      // Check that instruction contains valid comparison operator
-     if (comparisonOperator >= 3) {
+     if (comparisonOperator == 3) {
      	fatalError = true;
       	errorCode = 2;
       	return;
