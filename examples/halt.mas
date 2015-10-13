@@ -1,0 +1,5 @@
+/ text section
+/ Halt now takes a constant operand which specifies the exit status of the program,
+/ traditionally 0 is used to indicate successful program completion and non-0 to indicate non-successful program completion
+/ The exit status is outputted as a status message
+Halt 001
