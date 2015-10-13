@@ -51,7 +51,7 @@ public class Assembler implements Serializable {
            Hex literals must begin with a digit, e.g., BABE must be 0BABE.
            Address literals (instruction operands) must be in hex and in MARIE-addressable range.
            Numeric literals must be in the range of -32768 to 32767.  MARIE uses 16 bits only
-             so 0 -> 7FFF =      0 to 32767 and 
+             so 0 -> 7FFF =      0 to 32767 and
                 8000 -> 0 = -32768 to 0.
 */
 /* --                                                                                 -- */
@@ -82,7 +82,7 @@ public class Assembler implements Serializable {
   public static final int END             =     -5;
   public static final int MAX_SYMBOL_PRINT_LEN  =   24; // Maximum size of symbol when printing
                                                         // symbol table.  All chars significant,
-                                                        // only this many shown. 
+                                                        // only this many shown.
 
   public static final int LABEL_DELIM   = (int) ',';   // Punctuation for a label statement.
   public static final int COMMENT_DELIM = (int) '/';   // Punctuation for inline comment.
@@ -108,13 +108,13 @@ public class Assembler implements Serializable {
 /* --                                                                                 -- */
 /* --   Instance variables                                                            -- */
 /* --                                                                                 -- */
-                                     // Hashtables are used for the instruction set and the 
+                                     // Hashtables are used for the instruction set and the
                                      // symbol table so that we can easily search them and
                                      // retrieve values.
   public Hashtable symbolTable                    // Initial capacity 18, load factor 0.75.
                            = new Hashtable(18, (float) 0.75);
   public final Hashtable instructionSet = new Hashtable(18);
- 
+
   public int lineNumber;                          // Current instruction address.
   public int errorCount = 0;                      // Total number of errors in assembly.
   public boolean errorFound = false;              // "Temporary" error flag.
@@ -124,10 +124,10 @@ public class Assembler implements Serializable {
   public boolean hasLabel = false;                // Is current instruction labeled?
   public int maxSymbolLength = 0;                 // Longest symbol in code (for formatting).
 
-  class SymbolEntry {            
+  class SymbolEntry {
   /******************************************************************************************
   *  Inner class SymbolEntry is the framework for the objects that are used to store and    *
-  *  retrieve values that form the Assembler's symbol table.  As these objects are          * 
+  *  retrieve values that form the Assembler's symbol table.  As these objects are          *
   *  instantiated, they are placed in a HashTable structure.  As references to the symbols  *
   *  are found, they are added to the SymbolEntry's vector of references.                   *
   ******************************************************************************************/
@@ -170,7 +170,7 @@ void loadInstructionSet() {
  instructionSet.put("SUBT",       new Instruction("SUBT",       (byte) 4,   true));
  instructionSet.put("INPUT",      new Instruction("INPUT",      (byte) 5,   false));
  instructionSet.put("OUTPUT",     new Instruction("OUTPUT",     (byte) 6,   false));
- instructionSet.put("HALT",       new Instruction("HALT",       (byte) 7,   false));
+ instructionSet.put("HALT",       new Instruction("HALT",       (byte) 7,   true));
  instructionSet.put("SKIPCOND",   new Instruction("SKIPCOND",   (byte) 8,   true));
  instructionSet.put("JUMP",       new Instruction("JUMP",       (byte) 9,   true));
  instructionSet.put("CLEAR",      new Instruction("CLEAR",      (byte) 10,  false));
@@ -197,7 +197,7 @@ String statementLabel(String stmt) {
   int i = stmt.indexOf(LABEL_DELIM);         // Find the delimiter.
   if (i < 0)                                 // If none found, we're outta here.
     return " ";
-  hasLabel = true;                           // Set this for anything delimited. 
+  hasLabel = true;                           // Set this for anything delimited.
   if (i == 0)                                // Note: Index == 0 => label punct in first
     return " ";                              //         position => null label.
 
@@ -225,7 +225,7 @@ boolean tokenIsLiteral(String token) {
   char[] tokenChars = token.toCharArray();
   if (!Character.isDigit(tokenChars[0]))    // First character of a numeric
    return false;                            // literal must be 0..9.
-  for (int i = 0; i < token.length(); i++)  // Now check that the rest of the literal is 
+  for (int i = 0; i < token.length(); i++)  // Now check that the rest of the literal is
     if (!Character.isDigit(tokenChars[i]))  // a valid hex number.
       switch (tokenChars[i]) {
         case 'A':
@@ -238,7 +238,7 @@ boolean tokenIsLiteral(String token) {
         case 'd':
         case 'E':
         case 'e':
-        case 'F': 
+        case 'F':
         case 'f':break;
         default: return false;
       } // switch
@@ -258,7 +258,7 @@ int validMarieValue(int number) {
 
    int absNumber = Math.abs(number);
 
-   if ((absNumber >= MAX_MARIE_INT) && (absNumber <= (2*MAX_MARIE_INT)+1)) 
+   if ((absNumber >= MAX_MARIE_INT) && (absNumber <= (2*MAX_MARIE_INT)+1))
       return (absNumber - 2*(MAX_MARIE_INT+1));
 
    return Integer.MAX_VALUE;
@@ -324,10 +324,10 @@ int literalToInt(int literalType, String literal, boolean directive) {
   } // switch()
 
   if ( result == Integer.MAX_VALUE )             // If we found an error, we're done.
-    return 0; 
+    return 0;
 
   if (!directive) {                              // If the String argument is part of
-       if ((result < 0) || (result > MAX_MARIE_ADDR)) {   
+       if ((result < 0) || (result > MAX_MARIE_ADDR)) {
          setErrorMessage(errorMsgs[6]);          // an address literal, make sure
          result = 0;                             // the address is within addressible
        }                                         // Marie memory.
@@ -414,7 +414,7 @@ String getSymbolAddress(String symbol, String referenceLine) {
      se.referencedAt.add(referenceLine);
      symbolTable.put(symbol, se);
     }
-  else 
+  else
     setErrorMessage(errorMsgs[10]);
   return address;
 } // getSymbolAddress()
@@ -456,7 +456,7 @@ int getOpcode(String stmt) {
        }
      }
   }
-  else { 
+  else {
          setErrorMessage(errorMsgs[3]);                       // Instruction not found.
          value = Integer.MIN_VALUE;
        }
@@ -500,12 +500,12 @@ AssembledCodeLine parseCodeLine(String inputLine) {
                operand = new StringBuffer(" ");  // String buffer for the operand.
   int  instructionCode = 0,
             anIntValue = 0;
-  errorList.clear();                             // Reset all short-term error control 
+  errorList.clear();                             // Reset all short-term error control
   errorFound = false;                            // fields.
   codeLine.delete(0, codeLine.length());
                                                  // Consider the line only up to any comments.
-  int codeLength =  inputLine.indexOf(COMMENT_DELIM); 
-  
+  int codeLength =  inputLine.indexOf(COMMENT_DELIM);
+
   if (codeLength < 0)                            // Implies no comment present.
     codeLength = inputLine.length();
   if (codeLength > 0)  {                         // Copy noncomment code to working buffer.
@@ -527,7 +527,7 @@ AssembledCodeLine parseCodeLine(String inputLine) {
   if (lineNumber > MAX_MARIE_ADDR) {             // storage capacity for source code.
     setErrorMessage(errorMsgs[12]);              // If so, halt assembly.
     int size = errorList.size();
-    for (int i = 0; i < size; i++) 
+    for (int i = 0; i < size; i++)
        aCodeLine.errors.add((String) errorList.get(i));
     errorFound = true;
     done = true;
@@ -539,7 +539,7 @@ AssembledCodeLine parseCodeLine(String inputLine) {
 /* --   hasLabel flag to true if it finds one.                                        -- */
 /* --                                                                                 -- */
   String aToken = st.nextToken();
-  hasLabel = false;             
+  hasLabel = false;
   instructionLabel.append(statementLabel(aToken.trim()));
   aCodeLine.stmtLabel = instructionLabel.toString();
 /* --                                                                                 -- */
@@ -550,7 +550,7 @@ AssembledCodeLine parseCodeLine(String inputLine) {
   if (hasLabel) {                                         // If no label at all,
     if (st.hasMoreTokens()) {                             // get the next token.
        aToken = st.nextToken().toUpperCase();
-       instructionCode = getOpcode(aToken); 
+       instructionCode = getOpcode(aToken);
        aCodeLine.mnemonic = aToken;
     }                                                     // Otherwise, process the current
     else {                                                // token as an opCode.
@@ -578,7 +578,7 @@ AssembledCodeLine parseCodeLine(String inputLine) {
           operand.append(to4CharHexStr(anIntValue));
           instructionCode = literalToInt(HEX, operand.substring(0, 1), false);
           operand.deleteCharAt(0);                        // Put first char of literal
-          aCodeLine.operandToken = aToken.toUpperCase();  // in instructionCode field          
+          aCodeLine.operandToken = aToken.toUpperCase();  // in instructionCode field
         }
         else {                                                  // Handle ORiGination
           lineNumber = anIntValue - 1;                          // directive. (No code
@@ -589,7 +589,7 @@ AssembledCodeLine parseCodeLine(String inputLine) {
       else {                                                    // Otherwise, we must have an address
         if (tokenIsLiteral(aToken))  {                          // literal or label.
           anIntValue = literalToInt(HEX, aToken, false);
-          aToken = to3CharHexStr(anIntValue).toUpperCase();     // Convert literal to uppercase 
+          aToken = to3CharHexStr(anIntValue).toUpperCase();     // Convert literal to uppercase
           operand.append(aToken);
           aCodeLine.operandToken = aToken;
         }
@@ -620,9 +620,9 @@ AssembledCodeLine parseCodeLine(String inputLine) {
           aCodeLine.hexCode = " ";    // Clear code line except for directive.
           operand.delete(0, operand.length());
           operand.append("   ");
-          done = true;               
+          done = true;
        }
-  aCodeLine.operand = operand.toString(); 
+  aCodeLine.operand = operand.toString();
   if (errorFound) {               // Add any errors found to the output object.
     int last = errorList.size();
     for (int i = 0; i < last; i++) {
@@ -648,14 +648,14 @@ AssembledCodeLine symbolsToAddresses(AssembledCodeLine codeLine) {
 
   if (codeLine.operand.indexOf((int) '_') == 0) {
     currAddress = getSymbolAddress
-                    (codeLine.operand.substring(1, codeLine.operand.length()), 
+                    (codeLine.operand.substring(1, codeLine.operand.length()),
                       currAddress);
     if (currAddress != null) {
        codeLine.operand = currAddress;
     }
     else codeLine.operand = "???";    // Error: Symbol not found.
   }
-  if (errorFound) {                                   // We have only one possible kind 
+  if (errorFound) {                                   // We have only one possible kind
      codeLine.errors.add((String) errorList.get(0));  // of error from this pass.
     }
   return codeLine;
@@ -684,8 +684,8 @@ int performFirstPass() {
     return -1;
   }
   while (!done) {           // Loop through source file input.
-    try { 
-          String inputLine = sourceFile.readLine(); 
+    try {
+          String inputLine = sourceFile.readLine();
           if (inputLine != null) {
             aCodeLine = parseCodeLine(inputLine);
             objFileOut.writeObject(aCodeLine);
@@ -698,7 +698,7 @@ int performFirstPass() {
       done = true;
     } // catch
     catch (IOException e) {
-      System.err.println(e); 
+      System.err.println(e);
       return -1;
     } // catch
   } // while
@@ -727,7 +727,7 @@ int performSecondPass() {
     return -1;        // Negative return value is fatal error
   }
   while (!done) {
-    try { 
+    try {
           aCodeLine = (AssembledCodeLine) objFileIn.readObject();
           if (aCodeLine != null) {
             aCodeLine = symbolsToAddresses(aCodeLine);
@@ -741,11 +741,11 @@ int performSecondPass() {
     } // catch
     catch (ClassNotFoundException e) {
          done = true;
-         System.err.println(e); 
+         System.err.println(e);
          return -1;
     } // catch
     catch (IOException e) {
-      System.err.println(e); 
+      System.err.println(e);
       return -1;
     } // catch
   } // while
@@ -767,37 +767,37 @@ void produceFinalOutput() {
   openFinalFiles();
 
   int dirEndPos = 0;                              // Strip the path from the fileName
-  dirEndPos = sourceFileName.lastIndexOf(fileSeparator); 
+  dirEndPos = sourceFileName.lastIndexOf(fileSeparator);
   String currFilePrefix = sourceFileName.substring(dirEndPos+1, sourceFileName.length());
-  
-    try { 
+
+    try {
            for (int i = 0; i < 5; i++)                             // Write title heading.
               lstFile.write(" ");
            lstFile.write("Assembly listing for: "+currFilePrefix+"."+sourceType+lineFeed);
-           for (int i = 0; i < 5; i++) 
+           for (int i = 0; i < 5; i++)
               lstFile.write(" ");
            lstFile.write("           Assembled: "+new Date()+lineFeed);
            lstFile.write(lineFeed);
         }
     catch (IOException e) {
          done = true;
-         System.err.println(e);  
+         System.err.println(e);
     } // catch
 
   if (maxSymbolLength < 6)                         // Format the symbol printing so that the
-    maxSymbolLength = 6;                           // table won't wrap off of the right 
+    maxSymbolLength = 6;                           // table won't wrap off of the right
   else if (maxSymbolLength > MAX_SYMBOL_PRINT_LEN) // margin (assuming reasonable font size).
          maxSymbolLength = MAX_SYMBOL_PRINT_LEN;
 
   while (!done) {
-    try {             
+    try {
          aCodeLine = (AssembledCodeLine) objFileIn.readObject();     // Print a formatted
          if (aCodeLine == null)                                      // line on the listing.
             done = true;
          else {
            lstFile.write(aCodeLine.lineNo+" ");
            lstFile.write(aCodeLine.hexCode);
-           lstFile.write(aCodeLine.operand+" | "); 
+           lstFile.write(aCodeLine.operand+" | ");
            lstFile.write(" "+padStr(aCodeLine.stmtLabel, maxSymbolLength));
            lstFile.write(" "+aCodeLine.mnemonic);
            lstFile.write(" "+padStr(aCodeLine.operandToken,   //Put spaces after the operand...
@@ -809,32 +809,32 @@ void produceFinalOutput() {
     } // try
     catch (ClassNotFoundException e) {
          done = true;
-         System.err.println(e); 
+         System.err.println(e);
     } // catch
     catch (EOFException e) {
          done = true;
     } // catch
     catch (IOException e) {
-         System.err.println(e); 
+         System.err.println(e);
          done = true;
     } // catch
     if (done)
        break;
   } // while
-  try {             
+  try {
         lstFile.write(lineFeed);
         if (errorCount > 0) {
           lstFile.write(errorCount + " error");
-          if (errorCount > 1) 
+          if (errorCount > 1)
             lstFile.write("s");
-          lstFile.write(" found.  Assembly unsuccessful."+lineFeed); 
+          lstFile.write(" found.  Assembly unsuccessful."+lineFeed);
         }
         else
           lstFile.write("Assembly successful."+lineFeed);
         dumpSymbolTable();
    } // try
    catch (IOException e) {
-         System.err.println(e); 
+         System.err.println(e);
          done = true;
    } // catch
   closeFinalFiles();
@@ -876,7 +876,7 @@ void dumpSymbolTable() throws IOException {
   }
   lstFile.write("------------------------------------------"+lineFeed);
 
-  lstFile.write(indent + " Symbol");               // Third heading line. 
+  lstFile.write(indent + " Symbol");               // Third heading line.
   for (int i = 0; i < (maxSymbolLength-5); i++)
     lstFile.write(" ");
   lstFile.write("| Defined | References "+lineFeed);
@@ -885,7 +885,7 @@ void dumpSymbolTable() throws IOException {
   for (int i = 0; i < (maxSymbolLength-5); i++)
     lstFile.write("-");
   lstFile.write("+---------+-------------------------------");
-  
+
   if (mapFile != null) {                          // Write headings to symbol map file
     mapFile.write(" -----");                      // if assembly was successful.
     for (int i = 0; i < (maxSymbolLength-4); i++)
@@ -895,11 +895,11 @@ void dumpSymbolTable() throws IOException {
     for (int i = 0; i < (maxSymbolLength-5); i++)
       mapFile.write(" ");
     mapFile.write("| Location"+lineFeed);
-    mapFile.write(" ");  
-    mapFile.write("-----");       
+    mapFile.write(" ");
+    mapFile.write("-----");
     for (int i = 0; i < (maxSymbolLength-4); i++)
        mapFile.write("-");
-    mapFile.write("+---------");  
+    mapFile.write("+---------");
   }
   for (int i = 0; i < keyList.size(); i++) {      // Print table body.
     se = (SymbolEntry) symbolTable.get(keyList.get(i));
@@ -951,7 +951,7 @@ public static int assembleFile(String fileName) {
 ******************************************************************************************/
   Assembler   assembler = new Assembler();
   int         irrecoverableError = 0;
-  
+
   if ( fileName == null) {                                   // Make sure we have an
     System.err.println("\nNull input file to assembler.");   // input file specified.
     return -1;
@@ -1000,7 +1000,7 @@ void openFirstPassFiles() {
     return;
   } // catch
   catch (IOException e) {
-    System.err.println(lineFeed+e); 
+    System.err.println(lineFeed+e);
     errorFound = true;
     return;
   } // catch
@@ -1022,13 +1022,13 @@ void closeFirstPassFiles() {
        sourceFile.close();
      } // try
      catch (IOException e) {
-          System.err.println(e); 
+          System.err.println(e);
      } // catch
      try {                                             // Close intermediate file.
        objFileOut.close();
      } // try
      catch (IOException e) {
-          System.err.println(e); 
+          System.err.println(e);
      } // catch
 } // closeFirstPassFiles()
 
@@ -1050,7 +1050,7 @@ void openSecondPassFiles() {
     return;
   } // catch
   catch (IOException e) {
-    System.err.println(lineFeed+e); 
+    System.err.println(lineFeed+e);
     errorFound = true;
     return;
   } // catch
@@ -1075,13 +1075,13 @@ void closeSecondPassFiles() {
        objectFile = null;
      } // try
      catch (IOException e) {
-          System.err.println(e); 
+          System.err.println(e);
      } // catch
      try {                                           // Close assembled file.
        objFileOut.close();
      } // try
      catch (IOException e) {
-          System.err.println(e); 
+          System.err.println(e);
      } // catch
 } // closeSecondPassFiles()
 
@@ -1095,11 +1095,11 @@ void openFinalFiles() {
     lstFile = new BufferedWriter( new FileWriter(sourceFileName+"."+listType) );
   } // try
   catch (IOException e) {
-    System.err.println(lineFeed+e); 
+    System.err.println(lineFeed+e);
     errorFound = true;
     return;
   } // catch
-  try {                                                 // Open output and 
+  try {                                                 // Open output and
     objectFile = new File(sourceFileName+"."+exeType);  // try to open the input.
     objFileIn = new ObjectInputStream( new FileInputStream(objectFile) );
   } // try
@@ -1109,7 +1109,7 @@ void openFinalFiles() {
     return;
   } // catch
   catch (IOException e) {
-    System.err.println(lineFeed+e); 
+    System.err.println(lineFeed+e);
     errorFound = true;
     return;
   } // catch
@@ -1118,7 +1118,7 @@ void openFinalFiles() {
        mapFile = new BufferedWriter( new FileWriter(sourceFileName+"."+mapType) );
      } // try
      catch (IOException e) {
-       System.err.println(lineFeed+e); 
+       System.err.println(lineFeed+e);
        errorFound = true;
        return;
      } // catch
@@ -1136,7 +1136,7 @@ void closeFinalFiles() {
        lstFile.close();
      } // try
      catch (IOException e) {
-          System.err.println(e); 
+          System.err.println(e);
      } // catch
      try {                                             // Close assembled file.
        objFileIn.close();
@@ -1152,7 +1152,7 @@ void closeFinalFiles() {
        mapFile.close();                     // file if we opened it.
      } // try
      catch (IOException e) {
-          System.err.println(e); 
+          System.err.println(e);
      } // catch
  }
  else {                                    // If the assembly was unsuccessful, delete

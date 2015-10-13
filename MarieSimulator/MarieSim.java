@@ -2724,18 +2724,21 @@ public class MarieSim extends JFrame {
 *   boolean to determine which one is which.  The statusMessage is also loaded with       *
 *   a string from the errorMessage array so that it can be displayed.                     *
 ******************************************************************************************/
+    // Get exit status.
+    int exit_status = regIR.getValue() & 0x0fff;
+
     step.setEnabled(false);
     runStop.setEnabled(false);
     if (fatalError) {
        machineState = MARIE_HALTED_ABNORMAL;
        if (errorCode < errorMsgs.length)
-         setStatusMessage(" Machine halted abnormally.  Error: "+errorMsgs[errorCode]);
+         setStatusMessage(" Machine halted abnormally.  Error: "+errorMsgs[errorCode] + ". Exit status: " + exit_status);
        else
-         setStatusMessage(" Machine halted abnormally.");
+         setStatusMessage(" Machine halted abnormally. Exit status: " + exit_status);
     }
     else {
        machineState = MARIE_HALTED_NORMAL;
-       setStatusMessage(" Machine halted normally.");
+       setStatusMessage(" Machine halted normally. Exit status: " + exit_status);
     }
    } // halt()
 
