@@ -1,0 +1,13 @@
+/ This example demonstrates the new skipcond instruction via a < comparison
+
+/ text section
+	Load X
+	Skipcond 005	/ 005 HEX == 0000 0000 0005 BIN
+			/ First 2 bits == 0, therefore we are doing a less than comparison
+			/ Other 10 bits ==  5, so we skip the next instruction if the value in the AC is < 5
+	Load Y
+	Halt
+
+/ data section
+X, 	DEC 2
+Y, 	DEC 10
